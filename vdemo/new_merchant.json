@@ -1,0 +1,29 @@
+{
+  "sharded": true,
+  "vindexes": {
+    "md5": {
+      "type": "unicode_loose_md5"
+    },
+    "hash": {
+      "type": "hash"
+    }
+  },
+  "tables": {
+    "merchant": {
+      "column_vindexes": [
+        {
+          "column": "mname",
+          "name": "md5"
+        }
+      ]
+    },
+    "orders": {
+      "column_vindexes": [
+        {
+          "column": "mname",
+          "name": "md5"
+        }
+      ]
+    }
+  }
+}

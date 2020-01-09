@@ -1,0 +1,10 @@
+{
+  "workflow": "mat_orders",
+  "sourceKeyspace": "customer",
+  "targetKeyspace": "merchant",
+  "tableSettings": [{
+    "targetTable": "orders",
+    "sourceExpression": "select * from orders",
+    "create_ddl": "copy"
+  }]
+}

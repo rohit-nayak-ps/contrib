@@ -1,0 +1,10 @@
+{
+  "workflow": "mat",
+  "sourceKeyspace": "product",
+  "targetKeyspace": "customer",
+  "tableSettings": [{
+    "targetTable": "product",
+    "sourceExpression": "select * from product",
+    "create_ddl": "copy"
+  }]
+}
