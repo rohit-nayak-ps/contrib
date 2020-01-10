@@ -6,7 +6,7 @@ source ./kalias.source
 kmysql <data.sql
 sleep 1
 
-#Product Materialized view
+#Materialize Product table to Customer as a lookup table
 echo "************ Materializing Product table ************"
 kvtctl ApplyVSchema -vschema="$(cat new_customer.json)" customer
 sleep 1
@@ -17,7 +17,7 @@ sleep 1
 kvtctl GetRoutingRules
 
 
-#Merchant Orders
+#Materialize Customer Orders to Merchant Orders with a different sharding key
 echo "************ Materializing Orders table ************"
 kvtctl ApplyVSchema -vschema="$(cat new_merchant.json)" merchant
 sleep 1
@@ -26,6 +26,12 @@ sleep 1
 kvtctl ApplyRoutingRules -rules='{"rules": [{"fromTable":"orders", "toTables":["customer.orders", "merchant.orders"]}]}'
 sleep 1
 kvtctl GetRoutingRules
+
+#Migrate Customer Orders to Merchant Orders
+kvtctl MigrateReads -tablet_type=rdonly merchant.mat_orders
+kvtctl MigrateReads -tablet_type=replica merchant.mat_orders
+kvtctl MigrateWrites merchant.mat_orders
+
 
 echo Demo Done
 
